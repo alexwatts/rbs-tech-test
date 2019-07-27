@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {TestApplication.class})
-public class AccountContollerTest {
+public class AccountControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -58,16 +58,15 @@ public class AccountContollerTest {
     @Test
     public void shouldBeAbleToGetAccount() {
 
-        AccountIdentifier accountIdenfitier = new AccountIdentifier("67-23-65", "4773267");
-        Account anAccount = new Account(accountIdenfitier, new Money(Currency.getInstance(Locale.UK), BigDecimal.ZERO));
+        AccountIdentifier accountIdentifier = new AccountIdentifier("67-23-65", "4773267");
+        Account anAccount = new Account(accountIdentifier, new Money(Currency.getInstance(Locale.UK), BigDecimal.ZERO));
 
-        when(bankingService.getAccount(accountIdenfitier)).thenReturn(anAccount);
+        when(bankingService.getAccount(accountIdentifier)).thenReturn(anAccount);
 
-        ResponseEntity<Account> retrieivedAcccount = testRestTemplate.exchange(String.format("/accounts/%s/%s", accountIdenfitier.getSortCode(), accountIdenfitier.getAccountNumber()), HttpMethod.GET, null, new ParameterizedTypeReference<Account>() {});
+        ResponseEntity<Account> retrievedAccount = testRestTemplate.exchange(String.format("/accounts/%s/%s", accountIdentifier.getSortCode(), accountIdentifier.getAccountNumber()), HttpMethod.GET, null, new ParameterizedTypeReference<Account>() {});
 
-        assertThat(retrieivedAcccount.getStatusCode(), equalTo(HttpStatus.OK));
-        assertThat(retrieivedAcccount.getBody(), equalTo(anAccount));
-
+        assertThat(retrievedAccount.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat(retrievedAccount.getBody(), equalTo(anAccount));
     }
 
 }

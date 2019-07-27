@@ -52,7 +52,7 @@ public class BankingServiceTest {
         Account sourceAccount = givenAccount("1", givenMoney("100.00234342123123124"));
         Account destinationAccount = givenAccount("2", givenMoney("00.0000000001"));
 
-        subject.transfer(new Transfer(sourceAccount.getAccountIdentifier(), destinationAccount.getAccountIdentifier(), givenMoney("00.20")));
+        subject.transfer(new Transfer(sourceAccount.getAccountIdentifier(), destinationAccount.getAccountIdentifier(), givenMoney("00.20042340234123")));
         Account retrievedSourceAccount = subject.getAccount(sourceAccount.getAccountIdentifier());
         Account retrievedDestinationAccount = subject.getAccount(destinationAccount.getAccountIdentifier());
 

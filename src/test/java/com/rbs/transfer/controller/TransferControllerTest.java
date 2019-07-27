@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {TestApplication.class})
-public class TransferContollerTest {
+public class TransferControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -50,9 +50,9 @@ public class TransferContollerTest {
     public void shouldBeAbleToMakeTransfer() throws Exception {
 
         AccountIdentifier sourceAccount =  new AccountIdentifier("67-23-65", "4773267");
-        AccountIdentifier desintationAccount = new AccountIdentifier("23-54-77", "234234");
+        AccountIdentifier destinationAccount = new AccountIdentifier("23-54-77", "234234");
 
-        Transfer aTransfer = new Transfer(sourceAccount, desintationAccount, new Money(Currency.getInstance(Locale.UK), new BigDecimal("17.64")));
+        Transfer aTransfer = new Transfer(sourceAccount, destinationAccount, new Money(Currency.getInstance(Locale.UK), new BigDecimal("17.64")));
 
         when(bankingService.transfer(aTransfer)).thenReturn(aTransfer);
 
@@ -66,9 +66,9 @@ public class TransferContollerTest {
     public void shouldNotMakeTransferWhenInsufficientFunds() throws Exception {
 
         AccountIdentifier sourceAccount =  new AccountIdentifier("67-23-65", "4773267");
-        AccountIdentifier desintationAccount = new AccountIdentifier("23-54-77", "234234");
+        AccountIdentifier destinationAccount = new AccountIdentifier("23-54-77", "234234");
 
-        Transfer aTransfer = new Transfer(sourceAccount, desintationAccount, new Money(Currency.getInstance(Locale.UK), new BigDecimal("17.64")));
+        Transfer aTransfer = new Transfer(sourceAccount, destinationAccount, new Money(Currency.getInstance(Locale.UK), new BigDecimal("17.64")));
 
         when(bankingService.transfer(aTransfer)).thenThrow(new InsufficentFundsException("Insufficient funds"));
 
@@ -82,9 +82,9 @@ public class TransferContollerTest {
     public void shouldNotMakeTransferWhenAccountDetailsInvalid() throws Exception {
 
         AccountIdentifier sourceAccount =  new AccountIdentifier("67-23-65", "4773267");
-        AccountIdentifier desintationAccount = new AccountIdentifier("23-54-77", "234234");
+        AccountIdentifier destinationAccount = new AccountIdentifier("23-54-77", "234234");
 
-        Transfer aTransfer = new Transfer(sourceAccount, desintationAccount, new Money(Currency.getInstance(Locale.UK), new BigDecimal("17.64")));
+        Transfer aTransfer = new Transfer(sourceAccount, destinationAccount, new Money(Currency.getInstance(Locale.UK), new BigDecimal("17.64")));
 
         when(bankingService.transfer(aTransfer)).thenThrow(new AccountDetailsInvalidException("This account was not found. 67-23-65/4773267"));
 
