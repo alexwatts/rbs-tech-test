@@ -58,7 +58,8 @@ public class BankingService {
                         makeTransaction(
                                 accounts.get(transaction.getKey()).getKey(),
                                 accounts.get(transaction.getKey()).getValue(),
-                                transaction.getValue())
+                                transaction.getValue()
+                        )
         );
     }
 
@@ -90,7 +91,7 @@ public class BankingService {
     }
 
     private void validateSourceAccountHasFunds(Account sourceAccount, Money transferValue) throws InsufficentFundsException {
-        if (sourceAccount.getBalance().subtract(transferValue).getValue().compareTo(BigDecimal.ZERO) <= 0) {
+        if (sourceAccount.getBalance().subtract(transferValue).getValue().compareTo(BigDecimal.ZERO) < 0) {
             throw new InsufficentFundsException("Insufficient Funds");
         }
     }

@@ -41,7 +41,7 @@ public class TransferControllerTest {
 
     @Before
     public void setUp() {
-        headers= new HttpHeaders();
+        headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
     }
@@ -56,10 +56,10 @@ public class TransferControllerTest {
 
         when(bankingService.transfer(aTransfer)).thenReturn(aTransfer);
 
-        ResponseEntity<Transfer> createdAccount = testRestTemplate.exchange("/transfers", HttpMethod.PUT, new HttpEntity<>(aTransfer, headers), new ParameterizedTypeReference<Transfer>() {});
+        ResponseEntity<Transfer> createdTransfer = testRestTemplate.exchange("/transfers", HttpMethod.PUT, new HttpEntity<>(aTransfer, headers), new ParameterizedTypeReference<Transfer>() {});
 
-        assertThat(createdAccount.getStatusCode(), equalTo(HttpStatus.CREATED));
-        assertThat(createdAccount.getBody(), equalTo(aTransfer));
+        assertThat(createdTransfer.getStatusCode(), equalTo(HttpStatus.CREATED));
+        assertThat(createdTransfer.getBody(), equalTo(aTransfer));
     }
 
     @Test

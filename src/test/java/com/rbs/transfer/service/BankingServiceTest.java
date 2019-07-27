@@ -61,8 +61,20 @@ public class BankingServiceTest {
     }
 
     @Test
-    public void shouldNotBeAbleToMakeTransferWhenInsufficientFunds() throws Exception {
+    public void shouldBeAbleToMakeTransferWhenFundsExactlySameAsTransferAmount() throws Exception {
+        Account sourceAccount = givenAccount("1", givenMoney("100.00"));
+        Account destinationAccount = givenAccount("2", givenMoney("00.00"));
 
+        subject.transfer(new Transfer(sourceAccount.getAccountIdentifier(), destinationAccount.getAccountIdentifier(), givenMoney("100.00")));
+        Account retrievedSourceAccount = subject.getAccount(sourceAccount.getAccountIdentifier());
+        Account retrievedDestinationAccount = subject.getAccount(destinationAccount.getAccountIdentifier());
+
+        assertThat(retrievedSourceAccount.getBalance(), equalTo(givenMoney("00.00")));
+        assertThat(retrievedDestinationAccount.getBalance(), equalTo(givenMoney("100.00")));
+    }
+
+    @Test
+    public void shouldNotBeAbleToMakeTransferWhenInsufficientFunds() throws Exception {
         exception.expect(InsufficentFundsException.class);
         exception.expectMessage("Insufficient Funds");
 
@@ -74,7 +86,6 @@ public class BankingServiceTest {
 
     @Test
     public void shouldNotBeAbleToMakeTransferWhenSourceAccountDoesNotExist() throws Exception {
-
         exception.expect(AccountDetailsInvalidException.class);
         exception.expectMessage("This account was not found. nonsense/account");
 
@@ -85,7 +96,6 @@ public class BankingServiceTest {
 
     @Test
     public void shouldNotBeAbleToMakeTransferWhenDestinationAccountDoesNotExist() throws Exception {
-
         exception.expect(AccountDetailsInvalidException.class);
         exception.expectMessage("This account was not found. nonsense/account");
 
