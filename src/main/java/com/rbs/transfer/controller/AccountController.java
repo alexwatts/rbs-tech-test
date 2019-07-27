@@ -23,7 +23,7 @@ public class AccountController {
 
     @ResponseBody
     @RequestMapping(value = "{sortCode}/{accountNumber}",produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity<Account> createAccount(@PathVariable("sortCode") String sortCode, @PathVariable("accountNumber") String accountNumber) {
+    public ResponseEntity<Account> getAccount(@PathVariable("sortCode") String sortCode, @PathVariable("accountNumber") String accountNumber) {
         AccountIdentifier accountIdentifier = new AccountIdentifier(sortCode, accountNumber);
         return new ResponseEntity<>(bankingService.getAccount(accountIdentifier), HttpStatus.OK);
     }
