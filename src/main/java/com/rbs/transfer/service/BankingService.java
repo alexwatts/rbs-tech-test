@@ -32,12 +32,17 @@ public class BankingService {
     public Transfer transfer(Transfer transfer) throws InsufficentFundsException, AccountDetailsInvalidException {
         validateTransfer(transfer);
 
-        List<Pair<AccountIdentifier, Money>> orderedTransactions = getTransactionsToMakeOrderedByAccountId(
-                transfer.getSourceAccountIdentifier(),
-                transfer.getDestinationAccountIdentifier(),
-                transfer.getTransferValue());
+        List<Pair<AccountIdentifier, Money>> orderedTransactions =
+                getTransactionsToMakeOrderedByAccountId(
+                    transfer.getSourceAccountIdentifier(),
+                    transfer.getDestinationAccountIdentifier(),
+                    transfer.getTransferValue()
+                );
 
-        validateSourceAccountHasFunds(accounts.get(transfer.getSourceAccountIdentifier()).getKey(), transfer.getTransferValue());
+        validateSourceAccountHasFunds(
+                accounts.get(transfer.getSourceAccountIdentifier()).getKey(),
+                transfer.getTransferValue()
+        );
 
         makeTransactions(orderedTransactions);
 
