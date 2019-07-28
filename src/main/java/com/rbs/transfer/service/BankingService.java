@@ -67,10 +67,8 @@ public class BankingService {
         lock.lock();
         try {
             Account newAccount = new Account(account.getAccountIdentifier(), account.getBalance().add(transactionValue));
-            for (;;) {
-                if (accounts.replace(account.getAccountIdentifier(), new Pair<>(account, lock), new Pair<>(newAccount, lock))) {
-                    break;
-                }
+            if (!accounts.replace(account.getAccountIdentifier(), new Pair<>(account, lock), new Pair<>(newAccount, lock))) {
+                throw new IllegalStateException("Account was in an inconsistent state. Should never be possible.");
             }
         } finally {
             lock.unlock();
