@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootTest
 @ComponentScan("com.rbs.transfer")
 public class TestApplication {
+    
 }
 
 

@@ -36,4 +36,5 @@ public class AccountIdentifier {
     public int hashCode() {
         return Objects.hashCode(sortCode, accountNumber);
     }
+
 }

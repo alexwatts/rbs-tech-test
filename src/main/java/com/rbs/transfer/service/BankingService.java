@@ -53,26 +53,21 @@ public class BankingService {
         return accounts.computeIfAbsent(
                 account.getAccountIdentifier(),
                 ac -> new Pair<>(
-                        new Account(account.getAccountIdentifier(),account.getBalance()),
+                        new Account(account.getAccountIdentifier(), account.getBalance()),
                         new ReentrantLock()));
     }
 
     private void makeTransactions(List<Pair<AccountIdentifier, Money>> transactions) {
-        transactions.forEach(
-                transaction ->
-                        makeTransaction(
-                                accounts.get(transaction.getKey()).getKey(),
-                                accounts.get(transaction.getKey()).getValue(),
-                                transaction.getValue()
-                        )
-        );
+        transactions.forEach(this::makeTransaction);
     }
 
-    private void makeTransaction(Account account, Lock lock, Money transactionValue) {
+    private void makeTransaction(Pair<AccountIdentifier, Money> transaction) {
+        Lock lock = accounts.get(transaction.getKey()).getValue();
         lock.lock();
         try {
-            Account newAccount = new Account(account.getAccountIdentifier(), account.getBalance().add(transactionValue));
-            if (!accounts.replace(account.getAccountIdentifier(), new Pair<>(account, lock), new Pair<>(newAccount, lock))) {
+            Account oldAccount = accounts.get(transaction.getKey()).getKey();
+            Account newAccount = new Account(oldAccount.getAccountIdentifier(), oldAccount.getBalance().add(transaction.getValue()));
+            if (!accounts.replace(oldAccount.getAccountIdentifier(), new Pair<>(oldAccount, lock), new Pair<>(newAccount, lock))) {
                 throw new IllegalStateException("Account was in an inconsistent state. Should never be possible.");
             }
         } finally {

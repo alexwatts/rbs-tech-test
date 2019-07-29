@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value= HttpStatus.UNPROCESSABLE_ENTITY)
 public class AccountDetailsInvalidException extends Exception {
 
-    public AccountDetailsInvalidException(String meessage) {
-        super(meessage);
+    public AccountDetailsInvalidException(String message) {
+        super(message);
     }
 
 }
